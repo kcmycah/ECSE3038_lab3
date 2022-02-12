@@ -1,0 +1,91 @@
+from flask import Flask,request,jsonify
+
+app = Flask(__name__)  
+
+FAKE_DATABASE =[]
+count = 0
+
+
+#CRUD - CREATE,REQUEST,UPDATE,DELETE
+
+#CREATE
+@app.route("/register", methods=["POST"]) #Creating a new object or user in the server
+def post():
+  u = request.json["username"]
+  f = request.json["fname"]
+  l = request.json["lname"]
+  e = request.json["email"]
+  p = request.json["password"] 
+  print(u)
+  print(p)
+
+  global count
+  count +=1
+  user_object = {
+    "id": count,
+    "username": u,
+    "fname": f,
+    "lname": l,
+    "email": e,
+    "password": p
+  }
+
+  FAKE_DATABASE.append(user_object)
+  return jsonify(user_object)
+
+
+#UPDATE
+@app.route("/users", methods = ["GET"])
+def get_users():
+  return jsonify(FAKE_DATABASE)
+
+
+#UPDATE 
+@app.route("/user/<int:id>", methods=["PATCH"]) #Change an object from a server
+def patch_user(id):
+  for u in FAKE_DATABASE:
+    if u["id"] == id:
+      u["username"] = request.json["username"] 
+    return jsonify(u)
+
+
+#DELETE
+@app.route("/delete/<int:id>", methods = ["DELETE"]) #delete object from a server
+def delete_user(id):
+  for u in FAKE_DATABASE:
+    if u["id"] == id:
+      FAKE_DATABASE.remove(u)
+  return f"user with {id} deleted"
+
+
+
+if __name__ == '__main__':
+  app.run(debug = True,port = 3000, host = "0.0.0.0" )
+
+
+
+
+
+
+
+
+
+
+
+
+#READ
+#@app.route("/intro", methods = ["GET"]) #GET an object from the server
+#def home():
+ #   return f"ECSE3038-Engineering  Internet of Things"
+
+#UPDATE 
+#@app.route("/update", methods = ["PATCH"]) #Change an object from a server
+#def patch():
+ #   return
+
+#DELETE
+#@app.route("/delete", methods = ["DELETE"]) #delete object from a server
+
+
+
+
