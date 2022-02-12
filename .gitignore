@@ -1,0 +1,10 @@
+ECSE3038Lab1.py
+main.json
+main.xml
+*.txt
+.env
+.vscode
+.venv
+.pytest_cache
+__pycache__
+ECSE3038Lab2.py
